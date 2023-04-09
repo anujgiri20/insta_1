@@ -119,13 +119,13 @@ app.post("/login" , async(request,response)=>{
 
 
 //opeartions on data base
-app.get("/getuser",validateToken, async(request,response)=>{
+app.get("/getuser", async(request,response)=>{
     const client = await createconnections()
     const result = await client.db("notesdatabase").collection("people").find({}).toArray()
     response.send(result)
 
 })
-app.post("/insertToinsta",validateToken, async(request,response)=>{
+app.post("/insertToinsta", async(request,response)=>{
     const client = await createconnections()
     const add_data = request.body
     const result = await client.db("notesdatabase").collection("notes").insertMany([add_data])
@@ -137,7 +137,7 @@ app.get("/getFrominsta", async(request,response)=>{
     response.send(result)
 
 })
-app.delete("/deleteFrominsta/:id",validateToken , async(request,response)=>{
+app.delete("/deleteFrominsta/:id" , async(request,response)=>{
 const id = request.params.id
 const client = await createconnections()
 const user= await client.db("notesdatabase").collection("notes").deleteOne({_id: new mongodb.ObjectId(id)})
@@ -145,7 +145,7 @@ const user= await client.db("notesdatabase").collection("notes").deleteOne({_id:
    console.log(user)
    response.send(user)
 })
-app.put("/patchinsta/:id",validateToken, async(request, response) => {
+app.put("/patchinsta/:id", async(request, response) => {
     console.log(request.params);
  
     const id = request.params.id;
