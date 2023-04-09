@@ -131,7 +131,7 @@ app.post("/insertToinsta",validateToken, async(request,response)=>{
     const result = await client.db("notesdatabase").collection("notes").insertMany([add_data])
     response.send(result)
 })
-app.get("/getFrominsta",validateToken, async(request,response)=>{
+app.get("/getFrominsta", async(request,response)=>{
     const client = await createconnections()
     const result = await client.db("notesdatabase").collection("notes").find({}).toArray()
     response.send(result)
