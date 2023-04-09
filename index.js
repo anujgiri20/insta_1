@@ -5,8 +5,6 @@ const MongoClient = require('mongodb').MongoClient
 const mongodb =  require("mongodb")
 const cookieParser = require("cookie-parser");
 
-const{ response, request } = require("express");
-
 const jwt = require("jsonwebtoken");
 const verify = require("jsonwebtoken");
 
@@ -18,13 +16,18 @@ const PORT = process.env.PORT
 
 // create connection
 async function createconnections() {
-
     const MONGO_URL = process.env.MONGO_URL
     const client = new MongoClient(MONGO_URL)
     await client.connect();
     console.log("connected")
     return client;
  }
+
+
+
+
+
+
 app.use(express.json())
 app.use(cookieParser())
 app.get("/",(req,res)=>{
@@ -104,7 +107,7 @@ app.post("/login" , async(request,response)=>{
               expiresIn: "2h"
             }
           );
-        response.json({messege:"valid logged in",token:accessToken})
+        response.json({messege:"valid logged in",token:accessToken,result})
 
         
 
@@ -116,6 +119,12 @@ app.post("/login" , async(request,response)=>{
 
 
 //opeartions on data base
+app.get("/getuser",validateToken, async(request,response)=>{
+    const client = await createconnections()
+    const result = await client.db("notesdatabase").collection("people").find({}).toArray()
+    response.send(result)
+
+})
 app.post("/insertToinsta",validateToken, async(request,response)=>{
     const client = await createconnections()
     const add_data = request.body
